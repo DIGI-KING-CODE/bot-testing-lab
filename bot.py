@@ -1,6 +1,6 @@
-
 import os
 import logging
+from tests import run_all_tests
 from telegram import Update
 from telegram.ext import (
     Application,
@@ -43,10 +43,9 @@ async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def run_test(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    checks = {
-        "Python runtime": True,
-        "Bot token configured": bool(TOKEN),
-    }
+    report = run_all_tests()
+    await update.message.reply_text(report)
+    
     report = "🧪 SELF-TEST REPORT\n\n"
     for name, passed in checks.items():
         report += f"{'✅ PASS' if passed else '❌ FAIL'} — {name}\n"
